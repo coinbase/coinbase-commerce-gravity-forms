@@ -5,3 +5,4 @@ defined('METADATA_INVOICEID_PARAM') or define('METADATA_INVOICEID_PARAM', 'invoi
 defined('METADATA_CLIENTID_PARAM') or define('METADATA_CLIENTID_PARAM', 'clientid');
 defined('SIGNATURE_HEADER') or define('SIGNATURE_HEADER', 'x-cc-webhook-signature');
 defined('METADATA_TOKEN_PARAM') or define('METADATA_TOKEN_PARAM', 'token');
+defined('METADATE_CHARGE_ID') or define('METADATE_CHARGE_ID', 'charge_id');
