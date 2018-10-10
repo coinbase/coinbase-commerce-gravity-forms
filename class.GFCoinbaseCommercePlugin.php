@@ -125,6 +125,8 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
 
                 $charge = \CoinbaseSDK\Resources\Charge::create($chargeData);
 
+                gform_update_meta( $entry['id'], METADATE_CHARGE_ID, $charge['id']);
+
                 return $charge->hosted_url;
             } catch (\Exception $exception) {
                 add_filter('gform_confirmation', array($this, 'display_payment_failure'), 1000, 4);
@@ -205,12 +207,10 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
                 exit;
             }
 
-            if (($entry_id = $charge->getMetadataParam(METADATA_INVOICEID_PARAM)) === null) {
+            if (($entry_id = $charge->getMetadataParam(METADATA_INVOICEID_PARAM)) === null || gform_get_meta($entry_id, METADATE_CHARGE_ID) != $charge['id']) {
                 $this->log_debug( __METHOD__ . ' Invoice id is not found.');
                 exit;
             }
-
-            $entry =  GFAPI::get_entry($entry_id);
 
             $action = array(
                 'type'             => false,
@@ -260,7 +260,7 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
                         $action['transaction_id'] = $transactionId;
                         $action['transaction_type'] = $paymentNetwork;
                         $action['type'] = 'complete_payment';
-                        $action['note'] = sprintf('Charge was confirmed. Crypto currency: %s, crypto value: %s', $cryptoAmount, $cryptoCurrency);
+                        $action['note'] = sprintf('Charge was confirmed. Crypto currency: %s, crypto value: %s', $cryptoCurrency, $cryptoAmount);
                         $action['amount'] = $total;
 
                         $this->log_debug( __METHOD__ . ' charge:confirmed event was received.');
