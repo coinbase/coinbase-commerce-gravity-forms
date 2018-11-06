@@ -1,0 +1,22 @@
+.gform_tab_content .settings-wrap h3 {
+    font-size: 16px;
+}
+
+.settings-wrap td input {
+    width: 100%;
+}
+
+div.my-error, div.my-updated {
+    background: #fff;
+    border-left: 4px solid #fff;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    padding: 1px 12px;
+}
+
+div.my-error {
+    border-left-color: #dc3232;
+}
+
+div.my-updated {
+    border-left-color: #46b450;
+}
