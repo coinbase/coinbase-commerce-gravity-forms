@@ -3,8 +3,8 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
     GFForms::include_payment_addon_framework();
     require_once __DIR__ . '/class.GFCoinbaseCommerceAdmin.php';
     require_once __DIR__ . '/class.GFCoinbaseCommerceSettings.php';
-    require_once __DIR__ . '/CoinbaseSDK/init.php';
-    require_once __DIR__ . '/CoinbaseSDK/const.php';
+    require_once __DIR__ . '/vendor/CoinbaseSDK/init.php';
+    require_once __DIR__ . '/vendor/CoinbaseSDK/const.php';
 
     /**
      * Class for managing the plugin
@@ -116,11 +116,11 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
                     'description' => $description,
                     'metadata' => array(
                         METADATA_SOURCE_PARAM => METADATA_SOURCE_VALUE,
-                        METADATA_INVOICEID_PARAM => $orderId,
-                        METADATA_CLIENTID_PARAM => is_user_logged_in() ? get_current_user_id() : '',
-                        'email' => rgar($submission_data, 'email')
+                        METADATA_INVOICE_ID_PARAM => $orderId,
+                        METADATA_CLIENT_ID_PARAM => is_user_logged_in() ? get_current_user_id() : ''
                     ),
-                    'redirect_url' => $this->get_sucess_return_url($formId, $orderId, $entry['source_url'])
+                    'redirect_url' => $this->get_sucess_return_url($formId, $orderId, $entry['source_url']),
+                    'cancel_url' => $entry['source_url']
                 );
 
                 $charge = \CoinbaseSDK\Resources\Charge::create($chargeData);
@@ -133,7 +133,7 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
 
                 $this->log_debug('Unable to create coinbase commerce charge.' . $exception->getMessage());
                 echo __('Unable to complete payment.', 'gf-coinbase-commerce');
-                die('0');
+                die();
             }
         }
 
@@ -200,27 +200,20 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
             }
 
             \CoinbaseSDK\ApiClient::init($apiKey);
-            $charge = \CoinbaseSDK\Resources\Charge::retrieve($event->data['id']);
+            //$charge = \CoinbaseSDK\Resources\Charge::retrieve($event->data['id']);
+            $charge = $event->data;
 
             if ($charge->getMetadataParam(METADATA_SOURCE_PARAM) != METADATA_SOURCE_VALUE) {
                 $this->log_debug( __METHOD__ .' Not ' . METADATA_SOURCE_VALUE .  ' charge');
                 exit;
             }
 
-<<<<<<< HEAD
-            if (($entry_id = $charge->getMetadataParam(METADATA_INVOICEID_PARAM)) === null) {
-=======
-            if (($entry_id = $charge->getMetadataParam(METADATA_INVOICEID_PARAM)) === null || gform_get_meta($entry_id, METADATE_CHARGE_ID) != $charge['id']) {
->>>>>>> dev
+            if (($entry_id = $charge->getMetadataParam(METADATA_INVOICE_ID_PARAM)) === null
+                || gform_get_meta($entry_id, METADATE_CHARGE_ID) != $charge['id']) {
                 $this->log_debug( __METHOD__ . ' Invoice id is not found.');
                 exit;
             }
 
-<<<<<<< HEAD
-            $entry =  GFAPI::get_entry($entry_id);
-
-=======
->>>>>>> dev
             $action = array(
                 'type'             => false,
                 'amount'           => false,
@@ -228,62 +221,69 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
                 'transaction_id'   => false,
                 'subscription_id'  => false,
                 'entry_id'         => $entry_id,
-                'note'             => false,
+                'note'             => '',
             );
 
-            switch ($event->type) {
-                case 'charge:created':
-                    $this->log_debug( __METHOD__ . ' charge:created event was received.');
+            $lastTimeLine = end($charge->timeline);
 
-                    $action['note'] = 'Charge was created.';
+            switch ($lastTimeLine['status']) {
+                case 'RESOLVED':
+                case 'COMPLETED':
+                    $action['type'] = 'complete_payment';
+                    $action['note'] = sprintf('Charge %s was paid.', $charge['id']);
+                    break;
+                case 'PENDING':
                     $action['type'] = 'add_pending_payment';
+                    $action['note'] = sprintf(
+                        'Charge %s is pending. Charge has been detected but has not been confirmed yet.',
+                        $charge['id']
+                    );
+
                     break;
-                case 'charge:failed':
-                    $this->log_debug( __METHOD__ . ' charge:failed event was received.');
-
-                    $action['note'] = 'Charge was failed.';
-                    $action['type'] = 'fail_payment';
+                case 'NEW':
+                    $action['type'] = 'add_pending_payment';
+                    $action['note'] = sprintf('Charge %s was created. Awaiting payment.', $charge['id']);
                     break;
-                case 'charge:delayed':
-                    $this->log_debug( __METHOD__ . ' charge:delayed event was received.');
-
-                    $action['note'] = 'Charge was delayed.';
-                    $action['type'] = 'fail_payment';
-                    break;
-                case 'charge:confirmed':
-                    $this->log_debug( __METHOD__ . ' charge:confirmed event was received.');
-
-                    $transactionId = false;
-                    $total = false;
-                    foreach ($charge->payments as $payment) {
-                        if (strtolower($payment['status']) === 'confirmed') {
-                            $transactionId = $payment['transaction_id'];
-                            $paymentNetwork = $payment['network'];
-                            $total = isset($payment['value']['local']['amount']) ? $payment['value']['local']['amount'] : false;
-                            $cryptoAmount =  isset($payment['value']['crypto']['amount']) ? $payment['value']['crypto']['amount'] : false;
-                            $cryptoCurrency =  isset($payment['value']['crypto']['currency']) ? $payment['value']['crypto']['currency'] : false;
-                        }
-                    }
-
-                    if ($total) {
-                        $action['transaction_id'] = $transactionId;
-                        $action['transaction_type'] = $paymentNetwork;
+                case 'UNRESOLVED':
+                    // mark order as paid on overpaid or delayed
+                    if ($lastTimeLine['context'] === 'OVERPAID') {
                         $action['type'] = 'complete_payment';
-<<<<<<< HEAD
-                        $action['note'] = sprintf('Charge was confirmed. Crypto currency: %s, crypto value: %s', $cryptoAmount, $cryptoCurrency);
-=======
-                        $action['note'] = sprintf('Charge was confirmed. Crypto currency: %s, crypto value: %s', $cryptoCurrency, $cryptoAmount);
->>>>>>> dev
-                        $action['amount'] = $total;
-
-                        $this->log_debug( __METHOD__ . ' charge:confirmed event was received.');
-                        $this->log_debug( __METHOD__ . ' ' . $action['note']);
+                        $action['note'] = sprintf('Charge %s was overpaid.', $charge['id']);
                     } else {
-                        $this->log_debug( __METHOD__ . ' Invalid change:confirmed notification.');
-                        exit;
+                        $action['note'] = sprintf(
+                            'Charge %s was unresolved. Context %s.',
+                            $charge['id'],
+                            $lastTimeLine['context']
+                        );
+                        $action['type'] = 'fail_payment';
                     }
-
                     break;
+                case 'CANCELED':
+                    $action['note'] = sprintf('Charge %s was canceled.', $charge['id']);
+                    $action['type'] = 'fail_payment';
+                    break;
+                case 'EXPIRED':
+                    $action['note'] = sprintf('Charge %s has expired.', $charge['id']);
+                    $action['type'] = 'fail_payment';
+                    break;
+            }
+
+            foreach ($charge->payments as $payment) {
+                if (strtolower($payment['status']) === 'confirmed') {
+                    $transactionId = $payment['transaction_id'];
+                    $paymentNetwork = $payment['network'];
+                    $total = $payment['value']['local']['amount'];
+                    $cryptoAmount =  $payment['value']['crypto']['amount'];
+                    $cryptoCurrency =  $payment['value']['crypto']['currency'];
+
+                    $action['transaction_id'] = $transactionId;
+                    $action['transaction_type'] = $paymentNetwork;
+                    $action['note'] .= sprintf(' Payment was detected. Crypto currency: %s, crypto amount: %s', $cryptoCurrency, $cryptoAmount);
+                    $action['amount'] = $total;
+
+                    $this->log_debug( __METHOD__ . ' ' . $action['note']);
+                    break;
+                }
             }
 
             return $action;
