@@ -1,16 +1,16 @@
-=== Coinbase Commerce Payment Gateway For Gravity Forms ===
-Contributors: Coinbase
-Tags: coinbase, coinbase commerce, ethereum, litecoin, Gravity Forms bitcoin, bitcoin, cryptocurrency, payment gateway, Gravity Forms, Gravity Forms payment gateway, payment forms
-Plugin URI:
-Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 1.0.1
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+**Coinbase Commerce Payment Gateway For Gravity Forms**
+-------
+* Contributors: Coinbase
+* Tags: coinbase, coinbase commerce, ethereum, litecoin, Gravity Forms bitcoin, bitcoin, cryptocurrency, payment gateway, * Gravity Forms, Gravity Forms payment gateway, payment forms
+* Requires at least: 4.0
+* Tested up to: 5.0
+* Stable tag: 1.0.1
+* License: GPLv2 or later
+* License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Coinbase Commerce is a service that enables merchants to accept multiple cryptocurrencies directly into a user-controlled wallet.
 
-== Description ==
+### Description
 
 Coinbase Commerce is the digital payment service that allows merchants to accept payments in a variety of digital currencies like Bitcoin, Bitcoin Cash, Ethereum and Litecoin. These payments are received directly into a merchant-controlled wallet.
 
@@ -26,7 +26,7 @@ Features:
 -------
 * [Gravity Forms](https://www.gravityforms.com/) plugin 2.0 or later.
 
-== Installation ==
+### Installation
 
 This section describes how to install and setup the Gravity Forms Stripe Add-On. Be sure to follow *all* of the instructions in order for the Add-On to work properly. If you're unsure on any step, there are [screenshots](https://wordpress.org/plugins/gravity-forms-stripe/screenshots/).
 
@@ -50,13 +50,13 @@ Requires at least WordPress 4.0, PHP 5.3, [Gravity Forms](https://rocketgenius.p
 
 7. Create new Gravity form and add Coinbase Commerce Feed
 
-== Frequently Asked Questions ==
+### Frequently Asked Questions
 
-= Do I need to have SSL? =
+**Do I need to have SSL?**
 Yes, for webhook notifications you need ssl.
 
-== Changelog ==
+### Changelog
 
-= 1.0.0 =
+**1.0.0**
 
 * Initial release version
