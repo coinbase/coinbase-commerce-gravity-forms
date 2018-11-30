@@ -49,8 +49,11 @@ Requires at least WordPress 4.0, PHP 5.3, [Gravity Forms](https://rocketgenius.p
 
 ### Frequently Asked Questions
 
-**Do I need to have SSL?**
+**Do I need to have SSL?**  
 Yes, for webhook notifications you need SSL.
+
+**Does Coinbase Commerce integrate with other e-commerce platforms?**  
+Yes, a list of all offical integrations can be found here: [Coinbase Commerce Integrations](https://commerce.coinbase.com/integrate).
 
 ### Changelog
 
