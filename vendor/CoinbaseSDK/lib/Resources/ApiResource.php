@@ -5,7 +5,7 @@ use CoinbaseSDK\ApiClient;
 use CoinbaseSDK\ApiResponse;
 use CoinbaseSDK\Util;
 
-abstract class ApiResource extends \ArrayObject
+class ApiResource extends \ArrayObject
 {
     protected static $client;
 
@@ -170,6 +170,4 @@ abstract class ApiResource extends \ArrayObject
     {
         return new \ArrayIterator($this->attributes);
     }
-
-    abstract public static function getResourcePath();
 }
