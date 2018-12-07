@@ -22,10 +22,6 @@ Features:
 * No Middlemen — Be your own bank
 * Irreversible — Chargebacks are a thing of the past
 
-**Requirements**
--------
-* [Gravity Forms](https://www.gravityforms.com/) plugin 2.0 or later.
-
 == Installation ==
 
 ### Requirements
