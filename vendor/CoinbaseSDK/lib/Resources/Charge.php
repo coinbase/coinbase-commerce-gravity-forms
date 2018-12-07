@@ -5,7 +5,7 @@ use CoinbaseSDK\Operations\CreateMethodTrait;
 use CoinbaseSDK\Operations\ReadMethodTrait;
 use CoinbaseSDK\Operations\SaveMethodTrait;
 
-class Charge extends ApiResource
+class Charge extends ApiResource implements ResourcePathInterface
 {
     use CreateMethodTrait, ReadMethodTrait, SaveMethodTrait;
 
