@@ -24,5 +24,5 @@ function load_gf_coinbase_commerce_plugin()
 
     require_once('class.GFCoinbaseCommercePlugin.php');
     GFAddOn::register('GFCoinbaseCommercePlugin');
-    add_action('wp', GFCoinbaseCommercePlugin::process_confirmation(), 5);
+    add_action('wp', array('GFCoinbaseCommercePlugin', 'process_confirmation'), 5);
 }
