@@ -1,0 +1,12 @@
+{
+    "name": "coinbase/coinbase-commerce-gravity-forms",
+    "description": "Coinbase Commerce plugin for Gravity Forms",
+    "type": "composer-plugin",
+    "license": "Apache-2.0",
+    "require": {
+        "coinbase/coinbase-commerce": "^1.0.0"
+    },
+    "config": {
+        "vendor-dir": "gf-coinbase-commerce/vendor/CoinbaseSDK"
+    }
+}

@@ -37,15 +37,17 @@ Requires at least WordPress 4.0, PHP 5.3, [Gravity Forms](https://rocketgenius.p
 
 2. You'll also need a Coinbase Commerce account. To signup visit https://commerce.coinbase.com/
 
-3. Upload the plugin to your WordPress site /wp-content/plugins folder.
+3. Download zip archive from [releases page](https://github.com/coinbase/coinbase-commerce-gravity-forms/releases) and unzip or clone plugin and run `composer install` inside clonned folder
 
-4. Visit the **Plugins** menu in your WordPress dashboard, find `Coinbase Commerce Payments For Gravity Forms` in your plugin list, and click the Activate link.
+4. Upload the plugin folder gf-coinbase-commerce to your WordPress site /wp-content/plugins folder.
 
-5. Visit the **Forms->Settings** menu, select the Coinbase Commerce Tab, and add your API Key, Shared Secret Key from Coinbase Commerce Dashboard (https://commerce.coinbase.com/dashboard/settings).
+5. Visit the **Plugins** menu in your WordPress dashboard, find `Coinbase Commerce Payments For Gravity Forms` in your plugin list, and click the Activate link.
 
-6. Copy Webhook Notification Url from Coinbase Commerce Tab to Settings/Webhook subscription https://commerce.coinbase.com/dashboard/settings
+6. Visit the **Forms->Settings** menu, select the Coinbase Commerce Tab, and add your API Key, Shared Secret Key from Coinbase Commerce Dashboard (https://commerce.coinbase.com/dashboard/settings).
 
-7. Create new Gravity form and add Coinbase Commerce Feed.
+7. Copy Webhook Notification Url from Coinbase Commerce Tab to Settings/Webhook subscription https://commerce.coinbase.com/dashboard/settings
+
+8. Create new Gravity form and add Coinbase Commerce Feed.
 
 ### Frequently Asked Questions
 
