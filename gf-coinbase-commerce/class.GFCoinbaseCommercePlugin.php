@@ -3,7 +3,7 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
     GFForms::include_payment_addon_framework();
     require_once __DIR__ . '/class.GFCoinbaseCommerceAdmin.php';
     require_once __DIR__ . '/class.GFCoinbaseCommerceSettings.php';
-    require_once __DIR__ . '/vendor/CoinbaseSDK/init.php';
+    require_once __DIR__ . '/vendor/CoinbaseSDK/autoload.php';
     require_once __DIR__ . '/vendor/CoinbaseSDK/const.php';
 
     /**

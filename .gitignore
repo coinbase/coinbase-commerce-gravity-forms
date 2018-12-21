@@ -1,0 +1,4 @@
+/gf-coinbase-commerce/vendor/CoinbaseSDK/*
+!/gf-coinbase-commerce/vendor/CoinbaseSDK/const.php
+/.idea/
+/composer.lock
