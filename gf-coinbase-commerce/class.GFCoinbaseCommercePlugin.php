@@ -81,7 +81,7 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
         {
             try {
                 $apiKey = self::get_coinbase_setting(GFCoinbaseCommerceSettings::APP_KEY_PARAM);
-                \CoinbaseSDK\ApiClient::init($apiKey);
+                \CoinbaseCommerce\ApiClient::init($apiKey);
 
                 $description = '';
                 $amount = rgar($submission_data, 'payment_amount');
@@ -123,7 +123,7 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
                     'cancel_url' => $entry['source_url']
                 );
 
-                $charge = \CoinbaseSDK\Resources\Charge::create($chargeData);
+                $charge = \CoinbaseCommerce\Resources\Charge::create($chargeData);
 
                 gform_update_meta( $entry['id'], METADATE_CHARGE_ID, $charge['id']);
 
@@ -193,15 +193,14 @@ if (method_exists('GFForms', 'include_payment_addon_framework')) {
             $sharedSecret = self::get_coinbase_setting(GFCoinbaseCommerceSettings::APP_SECRET_PARAM);
 
             try {
-                $event = \CoinbaseSDK\Webhook::buildEvent($payload, $signatureHeader, $sharedSecret);
+                $event = \CoinbaseCommerce\Webhook::buildEvent($payload, $signatureHeader, $sharedSecret);
             } catch (\Exception $exception) {
                 $this->log_debug( __METHOD__ . ' Exception was throwed. Exception:' . $exception->getMessage() );
                 throw new Exception($exception->getMessage());
             }
 
-            \CoinbaseSDK\ApiClient::init($apiKey);
-            //$charge = \CoinbaseSDK\Resources\Charge::retrieve($event->data['id']);
-            $charge = $event->data;
+            \CoinbaseCommerce\ApiClient::init($apiKey);
+            $charge = \CoinbaseCommerce\Resources\Charge::retrieve($event->data['id']);
 
             if ($charge->getMetadataParam(METADATA_SOURCE_PARAM) != METADATA_SOURCE_VALUE) {
                 $this->log_debug( __METHOD__ .' Not ' . METADATA_SOURCE_VALUE .  ' charge');
