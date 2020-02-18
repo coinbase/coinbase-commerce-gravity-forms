@@ -9,7 +9,7 @@ Coinbase Commerce is a service that enables merchants to accept multiple cryptoc
 
 ### Description
 
-Coinbase Commerce is the digital payment service that allows merchants to accept payments in a variety of digital currencies like Bitcoin, Bitcoin Cash, Ethereum, Litecoin, and USD Coin. These payments are received directly into a merchant-controlled wallet.
+Coinbase Commerce is the digital payment service that allows merchants to accept payments in a variety of digital currencies like Bitcoin, Bitcoin Cash, DAI, Ethereum, Litecoin, and USD Coin. These payments are received directly into a merchant-controlled wallet.
 
 Features:
 
